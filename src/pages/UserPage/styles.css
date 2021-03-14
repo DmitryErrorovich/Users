@@ -1,0 +1,40 @@
+.User_card {
+  flex: 1;
+  max-width: 314.25px;
+  margin-right: 25px;
+}
+
+.User_media {
+  height: 130px;
+}
+
+.User_actions {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.User_collapse {
+  background-color: antiquewhite;
+}
+
+.Weather_card {
+  flex: 3;
+}
+
+.Weather_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Weather_description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+}
+
+.Back-button_container {
+  display: flex;
+  margin-bottom: 2rem;
+}

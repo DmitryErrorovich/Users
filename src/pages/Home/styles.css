@@ -1,0 +1,8 @@
+.MuiPaper-root  {
+  background-color: azure
+}
+
+.MuiListItem-root:hover {
+  background-color: rgb(188, 209, 209);
+  transition: .5s
+}

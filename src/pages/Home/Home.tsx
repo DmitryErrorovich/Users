@@ -1,13 +1,15 @@
-import React, { useEffect,  useMemo, useCallback } from "react";
+import React, { useEffect,  useMemo, useCallback, useState } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import map from "lodash/map";
 import { IUser, loading as ILoading } from "types/users";
 import get from "lodash/get";
-import { ListItemText, Paper, ListItemAvatar, Avatar } from "@material-ui/core";
+import { ListItemText, Paper, ListItemAvatar, Avatar, Grid, Typography } from "@material-ui/core";
+import Pagination from '@material-ui/lab/Pagination';
 import "./styles.css";
 import { ROUTES } from "navigation/const";
 import { History } from "history";
+import {getPaginationPage} from "../../utils/getPaginations";
 
 interface IState {
   fetchUsers: any;
@@ -16,17 +18,23 @@ interface IState {
   history: History;
 }
 
-export const Home = ({ fetchUsers, loading, users, history }: IState) => {
-  // const [selected, setSelected] = useState({})
-  console.log(loading)
+export const Home = ({ fetchUsers, loading, users, history, history: {replace, location: {search}} }: IState) => {
+  const [page, setPage] = useState(getPaginationPage(search))
+
   useEffect(() => {
-    fetchUsers(10);
-  }, [fetchUsers]);
+    fetchUsers({limit: 10, page: page});
+  }, [fetchUsers, page]);
+
+  const handleChangePage = useCallback((_, value) => {
+    replace({search: `page=${value}`})
+    setPage(value)
+  }, [setPage, replace])
 
   const handleSelect = useCallback((user: any) => () => {
+      handleChangePage(null,1)
     history.push(ROUTES.USER_PAGE,user)
-  }, [history])
-console.log(history)
+  }, [history, handleChangePage])
+
   const usersList = useMemo(() => {
     return map(users, user => {
       return (
@@ -47,8 +55,12 @@ console.log(history)
     return <div>LOADING</div>;
   }
   return (
-    <Paper>
+    <Paper className={"Main-paper"} elevation={6}>
+        <Typography variant={"h3"}>Users List</Typography>
       <List>{usersList}</List>
-    </Paper>
+      <Grid container justify={"center"} alignItems={"center"} >
+      <Pagination className={'Pagination'} onChange={handleChangePage} page={page} count={10} color="primary" />
+      </Grid>
+      </Paper>
   );
 };

@@ -18,7 +18,7 @@ export const usersReducer = createSlice({
         console.log({action})
         return {
           ...state,
-          users: get(action, "payload.results"),
+          users: get(action, "payload.users"),
           loading: 'succeeded'
         };
       }

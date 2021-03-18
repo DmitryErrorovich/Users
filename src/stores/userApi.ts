@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create ({
-    baseURL : 'https://randomuser.me/api/'
+    baseURL : 'http://localhost:1337/api/users/get/users'
 })
 
 api.defaults.headers.post['Accept'] = 'application/json'

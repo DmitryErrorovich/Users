@@ -11,18 +11,19 @@ import {
     Divider,
 } from "@material-ui/core";
 import "./styles.css";
-import { IUser, loading as ILoading } from "types/users";
+import { IUser } from "types/users";
 
 interface IProps {
-    loadWeather: () => void;
     user: IUser;
-    loading: string;
 }
 
-export const UserDescription = ({user, loading, loadWeather}: IProps) => {
+export const UserDescription = ({user}: IProps) => {
     const [expanded, setExpand] = useState(false);
+    const [expandedEdit, setExpandEdit] = useState(false)
 
-    const toogleExpand = useCallback(() => setExpand(!expanded), [expanded]);
+    const toogleExpand = useCallback(() => setExpand(!expanded), [setExpand,expanded]);
+
+    const expandEdit = useCallback(() => setExpandEdit(!expandedEdit),[setExpandEdit, expandedEdit])
 
     return (
         <Card elevation={6} className={"User_card"}>
@@ -44,8 +45,8 @@ export const UserDescription = ({user, loading, loadWeather}: IProps) => {
                 </Typography>
             </CardContent>
             <CardActions className={"User_actions"}>
-                <Button disabled={loading === ILoading.SUCCEEDED} onClick={loadWeather} size="small" color="secondary">
-                    See weather
+                <Button onClick={expandEdit} size="small" color="secondary">
+                    Edit
                 </Button>
                 <Button
                     onClick={toogleExpand}
@@ -90,6 +91,43 @@ export const UserDescription = ({user, loading, loadWeather}: IProps) => {
                         Email: {user.email}
                     </Typography>
                 </CardContent>
+            </Collapse>
+            <Collapse
+                className={"User_collapse"}
+                in={expandedEdit}
+                timeout="auto"
+                unmountOnExit
+            >
+                <CardContent>
+                    
+                    {/* <Typography gutterBottom variant="h6" component="h2">
+                        Details
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Gender: {user.gender}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Username: {user.login.username}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Age: {user.dob.age}
+                    </Typography> */}
+                </CardContent>
+                <Divider />
+                {/* <CardContent>
+                    <Typography gutterBottom variant="h6" component="h2">
+                        Contact info
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Cell: {user.cell}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Phone: {user.phone}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Email: {user.email}
+                    </Typography>
+                </CardContent> */}
             </Collapse>
         </Card>
     )

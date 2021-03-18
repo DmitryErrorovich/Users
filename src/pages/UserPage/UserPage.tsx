@@ -72,7 +72,7 @@ export const UserPage = ({
       justify="space-between"
       alignItems="flex-start"
     >
-      <UserDescription user={user} loadWeather={loadWeather}/>
+      <UserDescription user={user}/>
       {loading === ILoading.IDLE ? null : loading !== ILoading.SUCCEEDED ? (
         <Box>
           <Skeleton variant="rect" width={300} height={150} />

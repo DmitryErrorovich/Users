@@ -1,4 +1,3 @@
 import { IUsersInitialState, loading } from "types/users";
 
-// First, create the thunk
-export const initialState: IUsersInitialState = { users: [], loading: loading.IDLE };
+export const initialState: IUsersInitialState = { users: [], user: {}, loading: loading.IDLE, updating: loading.SUCCEEDED };

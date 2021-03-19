@@ -5,6 +5,8 @@ const baseState = (state: any) => state.users || {};
 
 export const loading = createSelector(baseState, state => get(state, "loading"));
 
+export const updatingUser = createSelector(baseState, state => get(state, "updating"));
+
 export const users = createSelector(baseState, state => get(state, "users"));
 
-export const selectedUser = createSelector(baseState, state => get(state, "user"))
+export const selectedUser = createSelector(baseState, state => get(state, "user") || {})

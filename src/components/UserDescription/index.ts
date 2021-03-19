@@ -1,5 +1,5 @@
 import { createStructuredSelector } from 'reselect';
-import { loading} from '../../stores/weather';
+import { updatingUser} from '../../stores/users';
 import { connect } from 'react-redux';
 import {UserDescription} from "./UserDescription";
 import {editUsersAction, selectedUser} from "../../stores/users";
@@ -11,7 +11,7 @@ const mapDispatch = {
 
 
 const mapState = createStructuredSelector({
-    loading,
+  updatingUser,
     user: selectedUser
 });
 

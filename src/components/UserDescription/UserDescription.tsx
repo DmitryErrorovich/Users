@@ -17,6 +17,7 @@ import "./styles.css";
 import { IUser } from "types/users";
 import {FormikProps, withFormik} from "formik";
 import * as Yup from 'yup';
+import { loading as ILoading } from "types/users";
 
 interface IFormValues {
     first: string;
@@ -27,20 +28,23 @@ interface IFormValues {
 
 interface IProps {
     user: IUser;
-    editUsers: (arg0: IUser) => void
-
+    editUsers: (arg0: IUser) => void;
+    updatingUser: ILoading;
 }
 
-const UserDesc = ({user, handleSubmit, handleChange, errors, values, touched}: IProps & FormikProps<IFormValues>) => {
+const UserDesc = ({user, dirty, updatingUser, handleSubmit, handleChange, errors, values, touched}: IProps & FormikProps<IFormValues>) => {
     const [expanded, setExpand] = useState(false);
     const [expandedEdit, setExpandEdit] = useState(false)
-    console.log({user})
-    const toogleExpand = useCallback(() => setExpand(!expanded), [setExpand,expanded]);
+    const toogleExpand = useCallback(() => {
+      setExpand(!expanded)
+      setExpandEdit(false)
+    }, [setExpand,expanded, setExpandEdit]);
 
-    const expandEdit = useCallback(() => setExpandEdit(!expandedEdit),[setExpandEdit, expandedEdit])
-    if(!user) {
-        return null
-    }
+    const expandEdit = useCallback(() => { 
+      setExpandEdit(!expandedEdit)
+      setExpand(false)
+    },[setExpandEdit, expandedEdit, setExpand])
+
     return (
         <Card elevation={6} className={"User_card"}>
             <CardMedia
@@ -116,11 +120,12 @@ const UserDesc = ({user, handleSubmit, handleChange, errors, values, touched}: I
             >
                 <CardContent>
                 <form onSubmit={handleSubmit}>
-                    {map(Object.keys(values), (item) => {
+                    {map(Object.keys(values), (item, index) => {
                         return <TextField
-
+                            key={`${item}--${index}`}
                             fullWidth
                             id={item}
+                            disabled={updatingUser !== ILoading.SUCCEEDED}
                             name={item}
                             label={capitalize(item)}
                             value={values[item]}
@@ -130,7 +135,7 @@ const UserDesc = ({user, handleSubmit, handleChange, errors, values, touched}: I
                         />
                     })}
                     <div style={{padding: '10px'}} />
-                    <Button color="primary" variant="contained" fullWidth type="submit">
+                    <Button disabled={updatingUser !== ILoading.SUCCEEDED || !dirty} color="primary" variant="contained" fullWidth type="submit">
                         Submit
                     </Button>
                 </form>
@@ -143,24 +148,28 @@ const UserDesc = ({user, handleSubmit, handleChange, errors, values, touched}: I
 const validationSchema = Yup.object().shape({
     first: Yup.string()
         .required('First name is required'),
-    // last: Yup.string()
-    //     .required('Last name is required'),
+    last: Yup.string()
+        .required('Last name is required'),
 });
 
 const formikEnhance = withFormik<IProps, IFormValues>({
     validationSchema,
     enableReinitialize: true,
     mapPropsToValues: ({user: {name: {first,last}, location: {city, country}}}) => {
+      console.log({
+        first,
+        last,
+        city,
+        country
+      })
         return {
             first,
             last,
             city,
-            country
+            country: !country ? "" : country
         }
     },
     handleSubmit: async ({ first, last, city, country}: IFormValues, formikBag) => {
-        console.log({formikBag})
-
         await formikBag.props.editUsers({ ...formikBag.props.user, name: { ...formikBag.props.user.name,first, last },location: {...formikBag.props.user.location,city, country }})
     },
 });

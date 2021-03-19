@@ -1,5 +1,7 @@
 import React, { useState, useCallback} from "react";
 import get from "lodash/get";
+import map from "lodash/map";
+import capitalize from 'lodash/capitalize';
 import {
     Card,
     CardMedia,
@@ -8,23 +10,37 @@ import {
     CardActions,
     Button,
     Collapse,
+    TextField,
     Divider,
 } from "@material-ui/core";
 import "./styles.css";
 import { IUser } from "types/users";
+import {FormikProps, withFormik} from "formik";
+import * as Yup from 'yup';
+
+interface IFormValues {
+    first: string;
+    last: string;
+    city: string;
+    country: string;
+}
 
 interface IProps {
     user: IUser;
+    editUsers: (arg0: IUser) => void
+
 }
 
-export const UserDescription = ({user}: IProps) => {
+const UserDesc = ({user, handleSubmit, handleChange, errors, values, touched}: IProps & FormikProps<IFormValues>) => {
     const [expanded, setExpand] = useState(false);
     const [expandedEdit, setExpandEdit] = useState(false)
-
+    console.log({user})
     const toogleExpand = useCallback(() => setExpand(!expanded), [setExpand,expanded]);
 
     const expandEdit = useCallback(() => setExpandEdit(!expandedEdit),[setExpandEdit, expandedEdit])
-
+    if(!user) {
+        return null
+    }
     return (
         <Card elevation={6} className={"User_card"}>
             <CardMedia
@@ -99,36 +115,55 @@ export const UserDescription = ({user}: IProps) => {
                 unmountOnExit
             >
                 <CardContent>
-                    
-                    {/* <Typography gutterBottom variant="h6" component="h2">
-                        Details
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Gender: {user.gender}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Username: {user.login.username}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Age: {user.dob.age}
-                    </Typography> */}
+                <form onSubmit={handleSubmit}>
+                    {map(Object.keys(values), (item) => {
+                        return <TextField
+
+                            fullWidth
+                            id={item}
+                            name={item}
+                            label={capitalize(item)}
+                            value={values[item]}
+                            onChange={handleChange}
+                            error={touched[item] && Boolean(errors[item])}
+                            helperText={touched[item] && errors[item]}
+                        />
+                    })}
+                    <div style={{padding: '10px'}} />
+                    <Button color="primary" variant="contained" fullWidth type="submit">
+                        Submit
+                    </Button>
+                </form>
                 </CardContent>
-                <Divider />
-                {/* <CardContent>
-                    <Typography gutterBottom variant="h6" component="h2">
-                        Contact info
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Cell: {user.cell}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Phone: {user.phone}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Email: {user.email}
-                    </Typography>
-                </CardContent> */}
             </Collapse>
         </Card>
     )
 }
+
+const validationSchema = Yup.object().shape({
+    first: Yup.string()
+        .required('First name is required'),
+    // last: Yup.string()
+    //     .required('Last name is required'),
+});
+
+const formikEnhance = withFormik<IProps, IFormValues>({
+    validationSchema,
+    enableReinitialize: true,
+    mapPropsToValues: ({user: {name: {first,last}, location: {city, country}}}) => {
+        return {
+            first,
+            last,
+            city,
+            country
+        }
+    },
+    handleSubmit: async ({ first, last, city, country}: IFormValues, formikBag) => {
+        console.log({formikBag})
+
+        await formikBag.props.editUsers({ ...formikBag.props.user, name: { ...formikBag.props.user.name,first, last },location: {...formikBag.props.user.location,city, country }})
+    },
+});
+
+export const UserDescription = formikEnhance(UserDesc)
+

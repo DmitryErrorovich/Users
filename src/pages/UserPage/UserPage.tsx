@@ -27,21 +27,25 @@ interface IProps {
   // fetchWeather: (payload: IPayload) => Promise<void>
   fetchWeather: any;
   weather: IWeather;
+    selectedUser: any;
   loading: ILoading;
+    fetchUser: any;
 }
 // TODO: REPLACE ALL IN XCOMPONENTS
 export const UserPage = ({
   history,
   fetchWeather,
   weather,
-  loading
+                             selectedUser,
+                             fetchUser,
+  loading,
 }: IProps) => {
   const [unit, setUnit] = useState(units[0]);
 
-
   const handleChangeUnit = useCallback(e => setUnit(e.target.value), [setUnit]);
+  useEffect(() =>       fetchUser(get(history, "location.state._id")), [history,fetchUser])
 
-  const user: IUser = useMemo(() => get(history, "location.state"), [history]);
+  const user: IUser = useMemo(() => selectedUser, [selectedUser]);
 
   const getTime = useCallback((time) => {
     const date = new Date(time);
@@ -51,13 +55,17 @@ export const UserPage = ({
   const loadWeather = useCallback(() => {
     console.log(unit);
     fetchWeather({
-      lon: get(user, "location.coordinates.longitude"),
-      lat: get(user, "location.coordinates.latitude"),
+      lon: get(user, "location.coordinates.longitude") || 1,
+      lat: get(user, "location.coordinates.latitude") || 1,
       unit
     });
   }, [user, fetchWeather, unit]);
 
   useEffect(() => loadWeather(), [loadWeather]);
+  console.log({userIS:user})
+    if(!user) {
+        return null
+    }
 
   return (
     <>
@@ -72,7 +80,7 @@ export const UserPage = ({
       justify="space-between"
       alignItems="flex-start"
     >
-      <UserDescription user={user}/>
+      <UserDescription />
       {loading === ILoading.IDLE ? null : loading !== ILoading.SUCCEEDED ? (
         <Box>
           <Skeleton variant="rect" width={300} height={150} />

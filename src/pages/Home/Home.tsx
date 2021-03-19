@@ -16,9 +16,10 @@ interface IState {
   loading: ILoading;
   users: Array<IUser>;
   history: History;
+    fetchUser: any;
 }
 
-export const Home = ({ fetchUsers, loading, users, history, history: {replace, location: {search}} }: IState) => {
+export const Home = ({ fetchUsers, fetchUser, loading, users, history, history: {replace, location: {search}} }: IState) => {
   const [page, setPage] = useState(getPaginationPage(search))
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export const Home = ({ fetchUsers, loading, users, history, history: {replace, l
   const handleSelect = useCallback((user: any) => () => {
       handleChangePage(null,1)
     history.push(ROUTES.USER_PAGE,user)
-  }, [history, handleChangePage])
+  }, [fetchUser,history, handleChangePage])
 
   const usersList = useMemo(() => {
     return map(users, user => {

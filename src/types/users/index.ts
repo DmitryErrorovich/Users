@@ -5,11 +5,13 @@ export interface IUser {
       first: string,
       last: string
     },
+    _id: string;
     location: {
       street: string,
       city: string,
       state: string,
       postcode: string,
+        country: string;
       coordinates: {
         latitude: string,
         longitude: string

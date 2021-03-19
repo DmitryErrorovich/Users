@@ -1,7 +1,7 @@
 import get from "lodash/get";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsersAction } from "./actions";
+import {fetchUsersAction, editUsersAction, fetchUserAction} from "./actions";
 import {  initialState } from "./users";
 import { IUsersInitialState } from "types/users";
 
@@ -31,5 +31,33 @@ export const usersReducer = createSlice({
         })
       
     );
+    builder.addCase(
+        editUsersAction.fulfilled,
+          (state: IUsersInitialState, action: any) => {
+            const updatedUsers = state.users.map(item => {
+                return item._id === get(action, "payload.user._id") ? {
+                    ...item,
+                    ...get(action, "payload.user")
+                } : item
+            })
+            return {
+                ...state,
+                users: updatedUsers,
+                loading: 'succeeded'
+            }
+          }
+
+    );
+      builder.addCase(
+          fetchUserAction.fulfilled,
+          (state: IUsersInitialState, action: any) => {
+              return {
+                  ...state,
+                  user: get(action, "payload.user"),
+                  loading: 'succeeded'
+              }
+          }
+
+      );
   }
 });

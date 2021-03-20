@@ -57,7 +57,7 @@ export const Home = ({
       handleChangePage(null, 1);
       history.push(ROUTES.USER_PAGE, user);
     },
-    [fetchUser, history, handleChangePage]
+    [history, handleChangePage]
   );
 
   const usersList = useMemo(() => {

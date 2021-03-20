@@ -10,10 +10,6 @@ export const Router = () => {
         <Switch>
             <Route exact path={ROUTES.ROOT} component={Home} />
             <Route exact path={ROUTES.USER_PAGE} component={UserPage} />
-
-            // Private routes below
-
-            // 404 page below
                 <Route path={'*'}>
                     <NotFound />
                 </Route>

@@ -14,10 +14,10 @@ import {
     Divider,
 } from "@material-ui/core";
 import "./styles.css";
-import { IUser } from "types/users";
+import { IUser } from "../../types/users/index";
 import {FormikProps, withFormik} from "formik";
 import * as Yup from 'yup';
-import { loading as ILoading } from "types/users";
+import { loading as ILoading } from "../../types/users";
 
 interface IFormValues {
     first: string;
@@ -120,6 +120,7 @@ const UserDesc = ({user, dirty, updatingUser, handleSubmit, handleChange, errors
             >
                 <CardContent>
                 <form onSubmit={handleSubmit}>
+
                     {map(Object.keys(values), (item, index) => {
                         return <TextField
                             key={`${item}--${index}`}

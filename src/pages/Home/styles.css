@@ -2,16 +2,21 @@
   padding: 3rem;
 }
 
-.MuiPaper-root  {
-  background-color: azure
+.MuiPaper-root {
+  background-color: azure;
 }
 
 .MuiListItem-root:hover {
   background-color: rgb(188, 209, 209);
   cursor: pointer;
-  transition: .5s
+  transition: 0.5s;
 }
 
 .Pagination {
   margin-bottom: 1.5rem;
+}
+@media (max-width: 600px) {
+  .Main-paper {
+    padding: .4rem;
+  }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { History } from "history";
 import get from "lodash/get";
-import isEmpty from 'lodash/isEmpty';
+import isEmpty from "lodash/isEmpty";
 import {
   Card,
   CardContent,
@@ -59,8 +59,8 @@ export const UserPage = ({
   }, []);
 
   const loadWeather = useCallback(() => {
-    if(isEmpty(user)) {
-      return
+    if (isEmpty(user)) {
+      return;
     }
     fetchWeather({
       lon: get(user, "location.coordinates.longitude") || 1,
@@ -125,12 +125,7 @@ export const UserPage = ({
           Go back
         </Button>
       </div>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="flex-start"
-      >
+      <Grid container className={"Container"}>
         <UserDescription />
         {weatherLoading === ILoading.IDLE ? null : weatherLoading !==
           ILoading.SUCCEEDED ? (

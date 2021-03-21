@@ -4,3 +4,9 @@
 .App {
   margin: 2rem
 }
+
+@media (max-width: 600px) {
+  .App {
+    margin: 1rem
+  }
+}

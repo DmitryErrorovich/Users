@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { History } from "history";
 import get from "lodash/get";
+import isEmpty from 'lodash/isEmpty';
 import {
   Card,
   CardContent,
@@ -58,15 +59,18 @@ export const UserPage = ({
   }, []);
 
   const loadWeather = useCallback(() => {
-    console.log(unit);
+    if(isEmpty(user)) {
+      return
+    }
     fetchWeather({
       lon: get(user, "location.coordinates.longitude") || 1,
       lat: get(user, "location.coordinates.latitude") || 1,
       unit
     });
   }, [user, fetchWeather, unit]);
-  console.log({ usersLoading });
+
   useEffect(() => loadWeather(), [loadWeather]);
+
   if (usersLoading !== ILoading.SUCCEEDED) {
     return (
       <Grid

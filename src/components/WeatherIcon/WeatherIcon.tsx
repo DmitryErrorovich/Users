@@ -7,7 +7,6 @@ interface IProps {
 }
 
 export const WeatherIcon = ({iconURL}: IProps) => {
-  console.log(iconURL)
   return (
     <Avatar src={`http://openweathermap.org/img/wn/${iconURL}.png`} />
   )

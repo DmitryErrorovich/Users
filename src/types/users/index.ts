@@ -56,8 +56,6 @@ export interface IUser {
 export interface IUsersInitialState {
   users: Array<IUser>;
   loading: "idle" | "pending" | "succeeded" | "failed";
-  user: IUser | {};
-  updating: "idle" | "pending" | "succeeded" | "failed";
 }
 
 export enum loading {

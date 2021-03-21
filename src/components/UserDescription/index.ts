@@ -1,8 +1,8 @@
 import { createStructuredSelector } from 'reselect';
-import { updatingUser} from '../../stores/users';
+import { updatingUser} from '../../stores/singleUser';
 import { connect } from 'react-redux';
 import {UserDescription} from "./UserDescription";
-import {editUsersAction, selectedUser} from "../../stores/users";
+import {editUsersAction, selectedUser} from "../../stores/singleUser";
 
 
 const mapDispatch = {

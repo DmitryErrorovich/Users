@@ -157,12 +157,6 @@ const formikEnhance = withFormik<IProps, IFormValues>({
     validationSchema,
     enableReinitialize: true,
     mapPropsToValues: ({user: {name: {first,last}, location: {city, country}}}) => {
-      console.log({
-        first,
-        last,
-        city,
-        country
-      })
         return {
             first,
             last,

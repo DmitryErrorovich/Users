@@ -13,8 +13,6 @@ export const weatherReducer = createSlice({
     builder.addCase(
       fetchWeatherAction.fulfilled,
       (state: IWeatherInitialState, action: any) => {
-        // TODO: interface for action
-        console.log({action})
         return {
           ...state,
           weather: get(action, "payload"),

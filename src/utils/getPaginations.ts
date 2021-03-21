@@ -6,7 +6,6 @@ export const getPaginationPage = (str: string) => {
     }
 
     const {page = 1} = qs.parse(str.replace("?", ""))
-    console.log(page)
     return  +page
 
 }

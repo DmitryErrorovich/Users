@@ -1,5 +1,6 @@
 .Main-paper {
   padding: 3rem;
+  margin-top: 4rem;
 }
 
 .MuiPaper-root {
@@ -17,6 +18,6 @@
 }
 @media (max-width: 600px) {
   .Main-paper {
-    padding: .4rem;
+    padding: 0.4rem;
   }
 }

@@ -2,7 +2,7 @@ import get from "lodash/get";
 
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchWeatherAction } from "./actions";
-import {  initialState } from "./weather";
+import { initialState } from "./weather";
 import { IWeatherInitialState } from "types/weather";
 
 export const weatherReducer = createSlice({
@@ -16,17 +16,17 @@ export const weatherReducer = createSlice({
         return {
           ...state,
           weather: get(action, "payload"),
-          loading: 'succeeded'
+          loading: "succeeded"
         };
       }
     );
     builder.addCase(
       fetchWeatherAction.rejected,
-      (state: IWeatherInitialState, action: any) => ({ // TODO: handle errors
-          ...state,
-          loading: 'failed'
-        })
-      
+      (state: IWeatherInitialState, action: any) => ({
+        // TODO: handle errors
+        ...state,
+        loading: "failed"
+      })
     );
   }
 });

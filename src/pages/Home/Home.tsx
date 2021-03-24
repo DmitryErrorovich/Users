@@ -82,13 +82,13 @@ export const Home = ({
   if (loading !== ILoading.SUCCEEDED) {
     return (
       <Paper className={"Main-paper"} elevation={6}>
-        <Skeleton height={"100px"}/>
-        <Skeleton height={"100px"}/>
-        <Skeleton height={"100px"}/>
-        <Skeleton height={"100px"}/>
-        <Skeleton height={"100px"}/>
-        <Skeleton height={"100px"}/>
-        <Skeleton height={"100px"}/>
+        <Skeleton height={"100px"} />
+        <Skeleton height={"100px"} />
+        <Skeleton height={"100px"} />
+        <Skeleton height={"100px"} />
+        <Skeleton height={"100px"} />
+        <Skeleton height={"100px"} />
+        <Skeleton height={"100px"} />
       </Paper>
     );
   }

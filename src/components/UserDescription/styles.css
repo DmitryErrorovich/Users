@@ -1,18 +1,22 @@
 .User_card {
-    flex: 1;
-    max-width: 314.25px;
-    margin-right: 25px;
+  flex: 1;
+  /* max-width: 314.25px; */
+  margin-right: 25px;
 }
 
 .User_media {
-    height: 130px;
+  height: 130px;
 }
 
 .User_actions {
-    display: flex;
-    justify-content: space-evenly;
+  display: flex;
+  justify-content: space-evenly;
 }
 
-.User_collapse {
-    background-color: antiquewhite;
+@media (max-width: 600px) {
+  .User_card {
+    margin-right: 0;
+    margin-bottom: 2.5rem;
+    width: 100%;
+  }
 }

@@ -9,7 +9,7 @@ export interface IPayload {
 
 export const fetchWeatherAction = createAsyncThunk(
   "FETCH_WEATHER",
-  async ({lon, lat, unit="metric"}: IPayload) => {
+  async ({ lon, lat, unit = "metric" }: IPayload) => {
     const response = await weatherApi.get(
       `?lat=${lat}&lon=${lon}&units=${unit}&appid=bc75b2b6ef48d2ecb8b56f2745624732`
     );

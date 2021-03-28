@@ -19,7 +19,7 @@ import { ROUTES } from "navigation/const";
 import { History } from "history";
 import { getPaginationPage, getSearchValue } from "../../utils/getURLParams";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { debounce, throttle } from "lodash";
+import { debounce } from "lodash";
 
 interface IState {
   fetchUsers: any;
@@ -53,7 +53,7 @@ export const Home = ({
   );
   const debouncedFetch = useCallback(
 		debounce((debPage, debSearchValue) => fetchUsers({ limit: 10, page: debPage, searchValue:debSearchValue }), 300),
-		[], // will be created only once initially
+		[debounce], // will be created only once initially
   );
 
   useEffect(() => {

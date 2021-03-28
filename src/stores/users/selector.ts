@@ -12,3 +12,8 @@ export const users = createSelector(
   baseState,
   state => get(state, "users")
 );
+
+export const totalPages = createSelector(
+  baseState,
+  state => get(state, "totalPages")
+);

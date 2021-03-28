@@ -4,12 +4,13 @@ import api from "../userApi";
 interface IPayload {
   limit: number;
   page: number;
+  searchValue: string;
 }
 
 export const fetchUsersAction = createAsyncThunk(
   "FETCH_USERS",
-  async ({ limit, page }: IPayload) => {
-    const response = await api.get(`/get/users/?page=${page}&results=${limit}`);
+  async ({ limit, page, searchValue }: IPayload) => {
+    const response = await api.get(`/get/users/?page=${page}&results=${limit}&searchValue=${searchValue}`);
     return response.data;
   }
 );

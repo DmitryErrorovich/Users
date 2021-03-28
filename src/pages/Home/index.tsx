@@ -1,11 +1,12 @@
 import { connect } from "react-redux";
-import { fetchUsersAction, loading, users } from "../../stores/users";
+import { fetchUsersAction, loading, totalPages, users } from "../../stores/users";
 import { createStructuredSelector } from "reselect";
 import { Home } from "./Home";
 
 const mapState = createStructuredSelector({
   loading,
-  users
+  users,
+  totalPages
 });
 
 const mapDispatch = {

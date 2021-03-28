@@ -10,39 +10,39 @@ import {
   ListItemAvatar,
   Avatar,
   Grid,
-  Typography
+  Typography,
+  TextField
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import "./styles.css";
 import { ROUTES } from "navigation/const";
 import { History } from "history";
-import { getPaginationPage } from "../../utils/getPaginations";
+import { getPaginationPage, getSearchValue } from "../../utils/getURLParams";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { debounce, throttle } from "lodash";
 
 interface IState {
   fetchUsers: any;
   loading: ILoading;
   users: Array<IUser>;
+  totalPages: number;
   history: History;
   fetchUser: any;
 }
 
 export const Home = ({
   fetchUsers,
-  fetchUser,
   loading,
   users,
   history,
+  totalPages,
   history: {
     replace,
     location: { search }
   }
 }: IState) => {
   const [page, setPage] = useState(getPaginationPage(search));
-
-  useEffect(() => {
-    fetchUsers({ limit: 10, page: page });
-  }, [fetchUsers, page]);
+  const [searchValue, setSearch] = useState(getSearchValue(search));
 
   const handleChangePage = useCallback(
     (_, value) => {
@@ -50,6 +50,27 @@ export const Home = ({
       setPage(value);
     },
     [setPage, replace]
+  );
+  const debouncedFetch = useCallback(
+		debounce((debPage, debSearchValue) => fetchUsers({ limit: 10, page: debPage, searchValue:debSearchValue }), 300),
+		[], // will be created only once initially
+  );
+
+  useEffect(() => {
+    debouncedFetch(page, searchValue)
+  }, [page, searchValue, debouncedFetch]);
+  
+  const handleChangeSearch = useCallback(
+    event => {
+      replace({
+        search: `${
+          event.target.value ? `searchValue=${event.target.value}` : ""
+        }`
+      });
+      setSearch(event.target.value);
+      setPage(1)
+    },
+    [replace, setSearch, setPage]
   );
 
   const handleSelect = useCallback(
@@ -79,32 +100,38 @@ export const Home = ({
     });
   }, [users, handleSelect]);
 
-  if (loading !== ILoading.SUCCEEDED) {
-    return (
-      <Paper className={"Main-paper"} elevation={6}>
-        <Skeleton height={"100px"} />
-        <Skeleton height={"100px"} />
-        <Skeleton height={"100px"} />
-        <Skeleton height={"100px"} />
-        <Skeleton height={"100px"} />
-        <Skeleton height={"100px"} />
-        <Skeleton height={"100px"} />
-      </Paper>
-    );
-  }
   return (
     <Paper className={"Main-paper"} elevation={6}>
       <Typography variant={"h3"}>Users List</Typography>
-      <List>{usersList}</List>
-      <Grid container justify={"center"} alignItems={"center"}>
-        <Pagination
-          className={"Pagination"}
-          onChange={handleChangePage}
-          page={page}
-          count={10}
-          color="primary"
-        />
-      </Grid>
+      <TextField
+        value={searchValue}
+        onChange={handleChangeSearch}
+        label={"Search..."}
+      />
+      {loading !== ILoading.SUCCEEDED ? (
+        <>
+          <Skeleton height={"100px"} />
+          <Skeleton height={"100px"} />
+          <Skeleton height={"100px"} />
+          <Skeleton height={"100px"} />
+          <Skeleton height={"100px"} />
+          <Skeleton height={"100px"} />
+          <Skeleton height={"100px"} />
+        </>
+      ) : (
+        <>
+          <List>{usersList}</List>
+          <Grid container justify={"center"} alignItems={"center"}>
+            <Pagination
+              className={"Pagination"}
+              onChange={handleChangePage}
+              page={page}
+              count={totalPages}
+              color="primary"
+            />
+          </Grid>
+        </>
+      )}
     </Paper>
   );
 };

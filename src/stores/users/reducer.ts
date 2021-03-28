@@ -16,6 +16,7 @@ export const usersReducer = createSlice({
         return {
           ...state,
           users: get(action, "payload.users"),
+          totalPages: get(action, "payload.totalPages"),
           loading: "succeeded"
         };
       }

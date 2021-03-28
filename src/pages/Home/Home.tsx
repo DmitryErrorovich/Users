@@ -51,9 +51,11 @@ export const Home = ({
     },
     [setPage, replace]
   );
+
+// eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedFetch = useCallback(
 		debounce((debPage, debSearchValue) => fetchUsers({ limit: 10, page: debPage, searchValue:debSearchValue }), 300),
-		[debounce], // will be created only once initially
+    [debounce], // will be created only once initially
   );
 
   useEffect(() => {

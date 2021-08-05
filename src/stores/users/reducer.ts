@@ -1,7 +1,7 @@
 import get from "lodash/get";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsersAction } from "./actions";
+import { cleanUsersAction, fetchUsersAction } from "./actions";
 import { initialState } from "./users";
 import { IUsersInitialState } from "types/users";
 
@@ -35,6 +35,12 @@ export const usersReducer = createSlice({
       (state: IUsersInitialState, action: any) => ({
         ...state,
         loading: "failed"
+      })
+    );
+    builder.addCase(
+      cleanUsersAction,
+      () => ({
+        ...initialState
       })
     );
   }

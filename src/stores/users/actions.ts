@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../userApi";
 
 interface IPayload {
@@ -13,4 +13,8 @@ export const fetchUsersAction = createAsyncThunk(
     const response = await api.get(`/get/users/?page=${page}&results=${limit}&searchValue=${searchValue}`);
     return response.data;
   }
+);
+
+export const cleanUsersAction = createAction(
+  "CLEAN_USERS"
 );

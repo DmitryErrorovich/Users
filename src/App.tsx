@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core/colors";
 
 const App = () => {
-  const [darkState, setDarkState] = useState(false);
+  const [darkState, setDarkState] = useState(JSON.parse(localStorage.getItem("dark_theme")));
   const palletType = darkState ? "dark" : "light";
 
   const mainPrimaryColor = useMemo(
@@ -50,6 +50,7 @@ const App = () => {
   });
 
   const handleThemeChange = useCallback(() => {
+    localStorage.setItem("dark_theme", `${!darkState}`)
     setDarkState(!darkState);
   }, [setDarkState, darkState]);
 

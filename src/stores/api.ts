@@ -5,7 +5,5 @@ const api = axios.create({
 });
 
 api.defaults.headers.post["Accept"] = "application/json"; 
-api.defaults.headers.post["Authorization"] = `Bearer fdsgagfgfdgdfsgfdgjwer`
-api.defaults.headers.post["Access-Control-Allow-Origin"] = "*"
 
 export default api;

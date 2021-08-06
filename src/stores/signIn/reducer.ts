@@ -1,11 +1,11 @@
 import get from "lodash/get";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { loginAction } from "./actions";
+import { loginAction, signUpAction } from "./actions";
 import { initialState } from "./signIn";
 import { ISignInInitialState } from "types/signIn";
 
-export const singleUserReducer = createSlice({
+export const signInReducer = createSlice({
   name: "signIn",
   initialState,
   reducers: {},
@@ -16,6 +16,7 @@ export const singleUserReducer = createSlice({
           console.log({state, action})
         return {
           ...state,
+          loading: "succeeded"
         };
       }
     );
@@ -28,6 +29,30 @@ export const singleUserReducer = createSlice({
     );
     builder.addCase(
         loginAction.rejected,
+      (state: ISignInInitialState) => ({
+        ...state,
+        loading: "failed"
+      })
+    );
+    builder.addCase(
+        signUpAction.fulfilled,
+      (state: ISignInInitialState, action: any) => {
+          console.log({state, action})
+        return {
+          ...state,
+          loading: "succeeded"
+        };
+      }
+    );
+    builder.addCase(
+        signUpAction.pending,
+      (state: ISignInInitialState) => ({
+        ...state,
+        loading: "pending"
+      })
+    );
+    builder.addCase(
+        signUpAction.rejected,
       (state: ISignInInitialState) => ({
         ...state,
         loading: "failed"

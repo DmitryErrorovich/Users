@@ -3,13 +3,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import * as Yup from "yup";
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { loading as ILoading } from "types/users";
 import Container from '@material-ui/core/Container';
 import { FormikProps, withFormik } from 'formik';
 import capitalize from 'lodash/capitalize';
@@ -18,11 +16,13 @@ import map from 'lodash/map';
 interface IFormValues {
   email: string;
   password: string;
+  name: string;
 }
 
 interface IProps {
   signInInfo: IFormValues;
-  login: (loginInfo: IFormValues) => void;
+  loading: ILoading;
+  signUp: (signUpInfo: IFormValues) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -45,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignIn = ({values, handleChange, handleSubmit, touched, errors}: IProps & FormikProps<IFormValues>) => {
+const SignUp = ({values, handleChange, handleSubmit, touched, errors, loading}: IProps & FormikProps<IFormValues>) => {
   const classes = useStyles();
-console.log({values})
+  console.log({loading})
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -56,7 +56,7 @@ console.log({values})
           <LockOpenIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
             {map(Object.keys(values), (item, index) => {
@@ -68,6 +68,7 @@ console.log({values})
                   name={item}
                   label={capitalize(item)}
                   value={values[item]}
+                  disabled={loading === ILoading.PENDING}
                   type={item === "password" ? "password" : "default"}
                   onChange={handleChange}
                   error={touched[item] && Boolean(errors[item])}
@@ -78,19 +79,13 @@ console.log({values})
           <Button
             type="submit"
             fullWidth
+            disabled={loading === ILoading.PENDING}
             variant="contained"
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Sign Up
           </Button>
-          <Grid container>
-            <Grid item>
-              <Link href="/sign_up" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
@@ -99,24 +94,26 @@ console.log({values})
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required"),
-  password: Yup.string().required("Password is required")
+  password: Yup.string().required("Password is required"),
+  name: Yup.string().required("Name is required"),  
 });
 
 const formikEnhance = withFormik<IProps, IFormValues>({
   validationSchema,
   enableReinitialize: true,
-  mapPropsToValues: ({signInInfo: {email, password}}) => {
+  mapPropsToValues: ({signInInfo: {email, password, name}}) => {
     return {
+        name,
       email,
       password
     };
   },
   handleSubmit: async (
-    { email, password }: IFormValues,
+    { email, password, name }: IFormValues,
     formikBag
   ) => {
-    await formikBag.props.login({email, password})
+    await formikBag.props.signUp({email, password, name})
   }
 });
 
-export const SignInComponent = formikEnhance(SignIn);
+export const SignUpComponent = formikEnhance(SignUp);

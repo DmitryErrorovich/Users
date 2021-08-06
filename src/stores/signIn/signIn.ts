@@ -4,5 +4,6 @@ import { loading } from "../../types/users";
 export const initialState: ISignInInitialState = {
   email: "",
   password: "",
-  loading: loading.IDLE
+  loading: loading.IDLE,
+  name: ""
 };

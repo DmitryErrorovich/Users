@@ -8,3 +8,11 @@ export const loginAction = createAsyncThunk(
     return response.data;
   }
 );
+
+export const signUpAction = createAsyncThunk(
+  "SIGN_UP",
+  async (signUpInfo: any) => {
+    const response = await api.post(`/register`, signUpInfo);
+    return response.data;
+  }
+);

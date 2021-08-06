@@ -16,12 +16,13 @@ import capitalize from 'lodash/capitalize';
 import map from 'lodash/map';
 
 interface IFormValues {
-  username: string;
+  email: string;
   password: string;
 }
 
 interface IProps {
-
+  signInInfo: IFormValues;
+  login: (loginInfo: IFormValues) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -44,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignIn = ({values, handleChange, touched, errors}: IProps & FormikProps<IFormValues>) => {
+const SignIn = ({values, handleChange, handleSubmit, touched, errors}: IProps & FormikProps<IFormValues>) => {
   const classes = useStyles();
-
+console.log({values})
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -57,7 +58,7 @@ const SignIn = ({values, handleChange, touched, errors}: IProps & FormikProps<IF
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form onSubmit={()=>{}} className={classes.form}>
+        <form onSubmit={handleSubmit} className={classes.form}>
             {map(Object.keys(values), (item, index) => {
               return (
                 <TextField
@@ -67,6 +68,7 @@ const SignIn = ({values, handleChange, touched, errors}: IProps & FormikProps<IF
                   name={item}
                   label={capitalize(item)}
                   value={values[item]}
+                  type={item === "password" ? "password" : "default"}
                   onChange={handleChange}
                   error={touched[item] && Boolean(errors[item])}
                   helperText={touched[item] && errors[item]}
@@ -96,24 +98,24 @@ const SignIn = ({values, handleChange, touched, errors}: IProps & FormikProps<IF
 }
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
+  email: Yup.string().required("Email is required"),
   password: Yup.string().required("Password is required")
 });
 
 const formikEnhance = withFormik<IProps, IFormValues>({
   validationSchema,
   enableReinitialize: true,
-  mapPropsToValues: ({}) => {
+  mapPropsToValues: ({signInInfo: {email, password}}) => {
     return {
-      username: "",
-      password: ""
+      email,
+      password
     };
   },
   handleSubmit: async (
-    { username, password }: IFormValues,
+    { email, password }: IFormValues,
     formikBag
   ) => {
-
+    await formikBag.props.login({email, password})
   }
 });
 

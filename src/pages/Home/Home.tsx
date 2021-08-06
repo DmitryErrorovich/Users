@@ -21,13 +21,14 @@ import { getPaginationPage, getSearchValue } from "../../utils/getURLParams";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { debounce } from "lodash";
 
-interface IState {
+interface IProps {
   fetchUsers: any;
   loading: ILoading;
   users: Array<IUser>;
   totalPages: number;
   history: History;
-  fetchUser: any;
+  cleanUsersStore: () => void;
+  fetchUser: (page: number, searchValue: string) => void;
 }
 
 export const Home = ({
@@ -36,11 +37,12 @@ export const Home = ({
   users,
   history,
   totalPages,
+  cleanUsersStore,
   history: {
     replace,
     location: { search }
   }
-}: IState) => {
+}: IProps) => {
   const [page, setPage] = useState(getPaginationPage(search));
   const [searchValue, setSearch] = useState(getSearchValue(search));
 
@@ -61,6 +63,12 @@ export const Home = ({
   useEffect(() => {
     debouncedFetch(page, searchValue)
   }, [page, searchValue, debouncedFetch]);
+
+  useEffect(() => {
+    return () => {
+      cleanUsersStore()
+    }
+  }, [cleanUsersStore])
   
   const handleChangeSearch = useCallback(
     event => {

@@ -16,4 +16,6 @@ const mapState = createStructuredSelector({
 export default connect(
   mapState,
   mapDispatch
+  // @ts-nocheck 
+  // @ts-ignore
 )(UserDescription);

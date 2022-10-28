@@ -12,7 +12,6 @@ import {
   loading as usersLoading,
 } from "../../stores/singleUser";
 
-// @ts-nocheck 
 const mapState = createStructuredSelector({
   weatherLoading: loading,
   weather: weatherSelector,

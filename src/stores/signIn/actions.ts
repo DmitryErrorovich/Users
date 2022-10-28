@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api";
 
 export const loginAction = createAsyncThunk(
@@ -7,6 +7,10 @@ export const loginAction = createAsyncThunk(
     const response = await api.post(`/login`, loginInfo);
     return response.data;
   }
+);
+
+export const logOutAction = createAction(
+  "LOG_OUT",
 );
 
 export const signUpAction = createAsyncThunk(

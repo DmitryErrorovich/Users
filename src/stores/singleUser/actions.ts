@@ -7,6 +7,10 @@ export const editUsersAction = createAsyncThunk(
   async (user: IUser) => {
     const response = await api.put(`/put/users`, {
       user
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     });
     return response.data;
   }
@@ -15,7 +19,11 @@ export const editUsersAction = createAsyncThunk(
 export const fetchUserAction = createAsyncThunk(
   "FETCH_USER",
   async (id: string) => {
-    const response = await api.get(`/get/user?id=${id}`);
+    const response = await api.get(`/get/user?id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    });
     return response.data;
   }
 );

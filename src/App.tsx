@@ -5,13 +5,10 @@ import { Router } from "./navigation/router";
 import "fontsource-roboto";
 import { Provider } from "react-redux";
 import { store } from "./stores/store";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import {
-  AppBar,
   Container,
   CssBaseline,
-  Switch,
-  Typography
 } from "@material-ui/core";
 import {
   blueGrey,
@@ -19,6 +16,7 @@ import {
   grey,
   red
 } from "@material-ui/core/colors";
+import AppTopBar from "components/AppTopBar";
 
 const App = () => {
   const [darkState, setDarkState] = useState(JSON.parse(localStorage.getItem("dark_theme")));
@@ -34,7 +32,7 @@ const App = () => {
     [darkState]
   );
 
-  const darkTheme = createMuiTheme({
+  const darkTheme = createTheme({
     palette: {
       background: {
         default: darkState ? grey[900] : blueGrey[50]
@@ -57,15 +55,10 @@ const App = () => {
   return (
     <MuiThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <AppBar>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Switch checked={darkState} onChange={handleThemeChange} />
-          <Typography>Change theme</Typography>
-        </div>
-      </AppBar>
       <Container className="App">
         <Provider store={store}>
           <BrowserRouter>
+            <AppTopBar darkState={darkState} handleThemeChange={handleThemeChange} />
             <Router />
           </BrowserRouter>
         </Provider>

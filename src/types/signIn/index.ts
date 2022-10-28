@@ -3,4 +3,5 @@ export interface ISignInInitialState {
     email: string;
     password: string;
     name: string;
+    token: string;
 }

@@ -11,7 +11,8 @@ import {
   Box,
   Select,
   MenuItem,
-  InputLabel
+  InputLabel,
+  Container
 } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import "./styles.css";
@@ -20,6 +21,7 @@ import { IWeather } from "types/weather";
 import WeatherIcon from "components/WeatherIcon";
 import map from "lodash/map";
 import UserDescription from "../../components/UserDescription";
+import { WarningRounded } from "@material-ui/icons";
 
 const units = ["standart", "metric", "imperial"];
 
@@ -41,7 +43,7 @@ export const UserPage = ({
   selectedUser,
   fetchUser,
   weatherLoading,
-  usersLoading
+  usersLoading,
 }: IProps) => {
   const [unit, setUnit] = useState(units[0]);
 
@@ -70,6 +72,34 @@ export const UserPage = ({
   }, [user, fetchWeather, unit]);
 
   useEffect(() => loadWeather(), [loadWeather]);
+
+  if (usersLoading === ILoading.FAILED) {
+    return (
+      <Container component="main" maxWidth="xs" style={{ marginTop: 100 }}>
+        <Card
+          style={{
+            padding: "50px 10px",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+          elevation={6}
+          className={"User_card"}
+        >
+          <WarningRounded color='primary' fontSize={'large'} />
+          <Typography variant="h5" style={{ marginBottom: 20 }}>You are not authorized</Typography>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => history.goBack()}
+          >
+            Go back
+          </Button>
+        </Card>
+      </Container>
+    );
+  }
 
   if (usersLoading !== ILoading.SUCCEEDED) {
     return (

@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import * as Yup from "yup";
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -14,6 +13,8 @@ import Container from '@material-ui/core/Container';
 import { FormikProps, withFormik } from 'formik';
 import capitalize from 'lodash/capitalize';
 import map from 'lodash/map';
+import { ROUTES } from 'navigation/const';
+import { History } from "history";
 
 interface IFormValues {
   email: string;
@@ -22,7 +23,8 @@ interface IFormValues {
 
 interface IProps {
   signInInfo: IFormValues;
-  login: (loginInfo: IFormValues) => void;
+  login: (loginInfo: IFormValues) => any;
+  history: History;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -45,9 +47,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignIn = ({values, handleChange, handleSubmit, touched, errors}: IProps & FormikProps<IFormValues>) => {
+const SignIn = ({ values, handleChange, handleSubmit, touched, errors }: IProps & FormikProps<IFormValues>) => {
   const classes = useStyles();
-console.log({values})
+  console.log({ values })
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -59,22 +61,22 @@ console.log({values})
           Sign in
         </Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
-            {map(Object.keys(values), (item, index) => {
-              return (
-                <TextField
-                  key={`${item}--${index}`}
-                  fullWidth
-                  id={item}
-                  name={item}
-                  label={capitalize(item)}
-                  value={values[item]}
-                  type={item === "password" ? "password" : "default"}
-                  onChange={handleChange}
-                  error={touched[item] && Boolean(errors[item])}
-                  helperText={touched[item] && errors[item]}
-                />
-              );
-            })}
+          {map(Object.keys(values), (item, index) => {
+            return (
+              <TextField
+                key={`${item}--${index}`}
+                fullWidth
+                id={item}
+                name={item}
+                label={capitalize(item)}
+                value={values[item]}
+                type={item === "password" ? "password" : "default"}
+                onChange={handleChange}
+                error={touched[item] && Boolean(errors[item])}
+                helperText={touched[item] && errors[item]}
+              />
+            );
+          })}
           <Button
             type="submit"
             fullWidth
@@ -105,7 +107,7 @@ const validationSchema = Yup.object().shape({
 const formikEnhance = withFormik<IProps, IFormValues>({
   validationSchema,
   enableReinitialize: true,
-  mapPropsToValues: ({signInInfo: {email, password}}) => {
+  mapPropsToValues: ({ signInInfo: { email, password } }) => {
     return {
       email,
       password
@@ -115,7 +117,12 @@ const formikEnhance = withFormik<IProps, IFormValues>({
     { email, password }: IFormValues,
     formikBag
   ) => {
-    await formikBag.props.login({email, password})
+    const res = await formikBag.props.login({ email, password })
+    console.log({ res })
+    if (res.payload.token) {
+      localStorage.setItem("token", res.payload.token);
+      formikBag.props.history.push(ROUTES.ROOT);
+    }
   }
 });
 

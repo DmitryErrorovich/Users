@@ -9,14 +9,14 @@ import { connect } from "react-redux";
 import {
   fetchUserAction,
   selectedUser,
-  loading as usersLoading
+  loading as usersLoading,
 } from "../../stores/singleUser";
 
 const mapState = createStructuredSelector({
   weatherLoading: loading,
   weather: weatherSelector,
   selectedUser: selectedUser,
-  usersLoading
+  usersLoading,
 });
 
 const mapDispatch = {

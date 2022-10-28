@@ -55,10 +55,12 @@ export const singleUserReducer = createSlice({
     );
     builder.addCase(
       fetchUserAction.rejected,
-      (state: ISingleUserInitialState, action: any) => ({
-        ...state,
-        loading: "failed"
-      })
+      (state: ISingleUserInitialState, action: any) => {
+        return {
+          ...state,
+          loading: "failed"
+        }
+      }
     );
   }
 });

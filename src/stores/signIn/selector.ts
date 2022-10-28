@@ -10,5 +10,5 @@ export const loading = createSelector(
 
 export const signInInfo = createSelector(
   baseState,
-  state => ({email: get(state, "email") || "", password: get(state, "password") || "", name: get(state, "name") || ""})
+  state => ({email: get(state, "email") || "", password: get(state, "password") || "", name: get(state, "name") || "", token: get(state, "token") || ""})
 );

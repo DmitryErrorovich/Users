@@ -5,5 +5,6 @@ export const initialState: ISignInInitialState = {
   email: "",
   password: "",
   loading: loading.IDLE,
-  name: ""
+  name: "",
+  token: localStorage.getItem('token') || "",
 };

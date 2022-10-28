@@ -20,7 +20,7 @@ import { IUser, loading as ILoading } from "types/users";
 import { IWeather } from "types/weather";
 import WeatherIcon from "components/WeatherIcon";
 import map from "lodash/map";
-import UserDescription from "../../components/UserDescription";
+import UserDescription from "components/UserDescription";
 import { WarningRounded } from "@material-ui/icons";
 
 const units = ["standart", "metric", "imperial"];

@@ -41,7 +41,8 @@ const UserDesc = ({
   errors,
   values,
   touched
-}: IProps & FormikProps<IFormValues>) => {
+}: any) => {
+// }: IProps & FormikProps<IFormValues>) => {
   const [expanded, setExpand] = useState(false);
   const [expandedEdit, setExpandEdit] = useState(false);
   const toogleExpand = useCallback(() => {

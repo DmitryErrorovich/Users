@@ -42,7 +42,7 @@ const UserDesc = ({
   values,
   touched
   // }: any) => {
-}: IProps & FormikProps<IFormValues>): JSX.Element => {
+}: IProps & FormikProps<IFormValues>): any => {
   const [expanded, setExpand] = useState(false);
   const [expandedEdit, setExpandEdit] = useState(false);
   const toogleExpand = useCallback(() => {
